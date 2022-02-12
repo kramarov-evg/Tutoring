@@ -16,18 +16,20 @@ class RepresentableFraction(Fraction):
             negative = True
         numerator, denominator = abs(numerator), abs(denominator)
 
-        if use_mixed:
+        if use_mixed and numerator > denominator:
             int_part = numerator // denominator
             numerator = numerator % denominator
-            if negative:
-                return f'(- {{ {{ {int_part} }} {{ {{ {numerator} }} over {{ {denominator} }} }} }})'
+            if numerator == 0:
+                result = f'{{ {int_part} }}'
             else:
-                return f'{{ {{ {int_part} }} {{ {{ {numerator} }} over {{ {denominator} }} }} }}'
+                result = f'{{ {{ {int_part} }} {{ {{ {numerator} }} over {{ {denominator} }} }} }}'
         else:
-            if negative:
-                return f'(- {{ {{ {numerator} }} over {{ {denominator} }} }})'
-            else:
-                return f'{{ {{ {numerator} }} over {{ {denominator} }} }}'
+            result = f'{{ {{ {numerator} }} over {{ {denominator} }} }}'
+
+        if negative:
+            return f'( - {result} )'
+        else:
+            return result
 
     def __add__(self, other):
         res = super().__add__(other)
