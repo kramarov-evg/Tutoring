@@ -1,16 +1,12 @@
 from fractions import Fraction
 
 class RepresentableFraction(Fraction):
-
-    answers_mode = False
-
     def __init__(self, numerator: int, denominator: int) -> None:
-        super().__init__(numerator, denominator)
         self.base_numerator = numerator
         self.base_denominator = denominator
 
-    def to_LO_format(self, use_mixed: bool):
-        if RepresentableFraction.answers_mode:
+    def to_LO_format(self, use_mixed: bool, answers_mode: bool = False):
+        if answers_mode:
             numerator, denominator = self.numerator, self.denominator
         else:
             numerator, denominator = self.base_numerator, self.base_denominator
@@ -32,3 +28,19 @@ class RepresentableFraction(Fraction):
                 return f'(- {{ {{ {numerator} }} over {{ {denominator} }} }})'
             else:
                 return f'{{ {{ {numerator} }} over {{ {denominator} }} }}'
+
+    def __add__(self, other):
+        res = super().__add__(other)
+        return RepresentableFraction(res.numerator, res.denominator)
+
+    def __sub__(self, other):
+        res = super().__sub__(other)
+        return RepresentableFraction(res.numerator, res.denominator)
+
+    def __mul__(self, other):
+        res = super().__mul__(other)
+        return RepresentableFraction(res.numerator, res.denominator)
+
+    def __truediv__(self, other):
+        res = super().__truediv__(other)
+        return RepresentableFraction(res.numerator, res.denominator)
